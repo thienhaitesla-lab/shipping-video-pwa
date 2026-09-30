@@ -27,3 +27,7 @@ Sau đó trên iPhone:
 Dựng video trên iPhone phụ thuộc bộ nhớ và codec MediaRecorder của Safari. Nếu 1080p không ổn định, dùng 720p. Nếu Safari không hỗ trợ MP4 cho MediaRecorder, app sẽ dùng codec video khác nếu có.
 
 Nhạc thương mại chỉ nên dùng preview để nghe thử. Muốn chèn bản đầy đủ, hãy chọn file nhạc bạn có quyền sử dụng từ iPhone.
+
+
+## Bản GitHub dễ upload
+Hai file icon-192.png và icon-512.png đã được chuyển ra thư mục gốc. Không cần tạo thư mục icons trên GitHub.
