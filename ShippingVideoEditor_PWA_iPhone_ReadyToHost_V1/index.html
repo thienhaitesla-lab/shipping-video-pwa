@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+  <meta name="theme-color" content="#0B5ED7">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Shipping Video">
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Shipping Video Editor</title>
+</head>
+<body>
+  <header class="topbar">
+    <div><h1>Shipping Video Editor</h1><p>PWA cho iPhone • chữ video xanh dương</p></div>
+    <button id="installHelpBtn" class="ghost small">Cài lên iPhone</button>
+  </header>
+  <main>
+    <section class="card">
+      <h2>1. Thông tin thương hiệu</h2>
+      <div class="grid">
+        <label>Tên thương hiệu<input id="brandName" value="Xuân Hải"></label>
+        <label>Số điện thoại<input id="phone" value="0934417179" inputmode="tel"></label>
+        <label class="span2">Địa chỉ<input id="address" value="344 Quang Trung - P. Nam Hồng Lĩnh - Hà Tĩnh"></label>
+      </div>
+      <label class="file-btn">🖼 Chọn logo<input id="logoInput" type="file" accept="image/*" hidden></label>
+      <div id="logoName" class="hint">Chưa chọn logo</div>
+    </section>
+
+    <section class="card">
+      <h2>2. Ảnh & video</h2>
+      <label class="file-btn primary">＋ Thêm ảnh/video<input id="mediaInput" type="file" accept="image/*,video/*" multiple hidden></label>
+      <div id="mediaList" class="media-list empty">Chưa có ảnh/video</div>
+    </section>
+
+    <section class="card">
+      <h2>3. Nhạc</h2>
+      <div class="tabrow">
+        <button class="tab active" data-tab="localMusic">Từ iPhone</button>
+        <button class="tab" data-tab="suggestMusic">Gợi nhớ quê nhà</button>
+      </div>
+
+      <div id="localMusic" class="tabpane active">
+        <label class="file-btn">🎵 Chọn file nhạc<input id="musicInput" type="file" accept="audio/*" hidden></label>
+        <div id="musicName" class="hint">Chưa chọn nhạc</div>
+        <audio id="musicPreview" controls playsinline></audio>
+      </div>
+
+      <div id="suggestMusic" class="tabpane">
+        <label>Tìm bài Việt Nam
+          <div class="inline">
+            <input id="musicSearch" placeholder="Ví dụ: Gửi Những Người Con Phương Xa">
+            <button id="musicSearchBtn">Tìm</button>
+          </div>
+        </label>
+        <select id="homelandCategory"></select>
+        <div id="songSuggestions" class="song-list"></div>
+        <div class="hint">Bài thương mại chỉ dùng để nghe preview/tìm nguồn. Để chèn vào video, hãy chọn file nhạc bạn có quyền sử dụng từ iPhone.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>4. Kiểu video</h2>
+      <div class="grid">
+        <label>Mẫu
+          <select id="template">
+            <option value="general">Quốc tế - Tổng quát</option>
+            <option value="us">Việt Nam → Mỹ</option>
+            <option value="uk">Việt Nam → Anh</option>
+            <option value="au">Việt Nam → Úc</option>
+            <option value="ca">Việt Nam → Canada</option>
+          </select>
+        </label>
+        <label>Tỷ lệ
+          <select id="ratio">
+            <option value="9:16">9:16 TikTok/Reels</option>
+            <option value="1:1">1:1 Vuông</option>
+            <option value="16:9">16:9 Ngang</option>
+          </select>
+        </label>
+        <label>Chất lượng
+          <select id="quality">
+            <option value="720">720p — nhẹ hơn</option>
+            <option value="1080">1080p</option>
+          </select>
+        </label>
+        <label>Ảnh / cảnh
+          <select id="photoDuration">
+            <option value="3">3 giây</option>
+            <option value="4" selected>4 giây</option>
+            <option value="5">5 giây</option>
+            <option value="6">6 giây</option>
+          </select>
+        </label>
+      </div>
+      <label>Âm lượng nhạc <span id="volumeValue">65%</span><input id="musicVolume" type="range" min="0" max="100" value="65"></label>
+    </section>
+
+    <section class="card preview-card">
+      <h2>5. Xem trước</h2>
+      <div class="canvas-wrap"><canvas id="previewCanvas" width="720" height="1280"></canvas></div>
+      <div class="actions">
+        <button id="previewBtn">▶ Xem thử</button>
+        <button id="stopBtn" class="ghost">■ Dừng</button>
+        <button id="exportBtn" class="primary">🎬 Tạo video</button>
+      </div>
+      <progress id="exportProgress" value="0" max="100"></progress>
+      <div id="status" class="status">Sẵn sàng.</div>
+      <a id="downloadLink" class="download hidden" download="shipping-video.mp4">Lưu video</a>
+    </section>
+
+    <section class="card info">
+      <h2>Cài lên màn hình iPhone</h2>
+      <p>Mở trang này bằng <b>Safari</b> → bấm <b>Chia sẻ</b> → <b>Thêm vào Màn hình chính</b>.</p>
+      <p class="hint">PWA cần chạy từ HTTPS. ZIP này là mã nguồn ready-to-host.</p>
+    </section>
+  </main>
+
+  <dialog id="installDialog">
+    <h3>Cài PWA trên iPhone</h3>
+    <ol><li>Mở địa chỉ PWA bằng Safari.</li><li>Bấm nút Chia sẻ.</li><li>Chọn “Thêm vào Màn hình chính”.</li><li>Bấm “Thêm”.</li></ol>
+    <button id="closeInstall">Đã hiểu</button>
+  </dialog>
+  <script src="app.js"></script>
+</body>
+</html>
